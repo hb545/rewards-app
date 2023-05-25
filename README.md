@@ -1,4 +1,5 @@
 
+
 # Rewards Application
 
 The application calculates the reward points based on the transaction happened in last three months (month-wise rewards).
@@ -63,3 +64,15 @@ API's :
 ### IntelliJ
 
 1. Run the *RewardsApplication.java* file
+
+## Database
+
+### Configuration
+
+    spring.datasource.url=jdbc:h2:mem:testdb
+    spring.datasource.driverClassName=org.h2.Driver
+    spring.datasource.username=sa
+    spring.datasource.password=password
+    spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+*Modify the details as per your need in application.properties file, this are default details using h2 database.*
