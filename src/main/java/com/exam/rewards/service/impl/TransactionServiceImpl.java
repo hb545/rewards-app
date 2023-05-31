@@ -2,6 +2,7 @@ package com.exam.rewards.service.impl;
 
 import java.util.List;
 
+import com.exam.rewards.exceptions.NotFoundException;
 import com.exam.rewards.models.Response;
 import com.exam.rewards.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,9 @@ public class TransactionServiceImpl implements TransactionService {
 	public Response<List<TransactionDetails>> getAllTransactionsDetails(){
 		Response<List<TransactionDetails>> response = null;
 		List<TransactionDetails> transactionDetailsList = transactionDetailsRepository.findAll();
-
+		if(transactionDetailsList.isEmpty()){
+			throw new NotFoundException("No data found.");
+		}
 		if(transactionDetailsList!=null){
 			response = new Response<>();
 			response.setMessage(TRANSACTION_DETAILS_FETCHED_SUCCESSFULLY);
@@ -48,6 +51,9 @@ public class TransactionServiceImpl implements TransactionService {
 	public Response<List<TransactionDetails>> getTransactionDetailsById(String customerId){
 		Response<List<TransactionDetails>> response=null;
 		List<TransactionDetails> transactionsList = transactionDetailsRepository.findByCustomerId(customerId);
+		if(transactionsList.isEmpty()){
+			throw new NotFoundException("Customer Id not found");
+		}
 		if(transactionsList!=null){
 			response = new Response<>();
 			response.setMessage(TRANSACTION_DETAILS_FETCHED_SUCCESSFULLY);

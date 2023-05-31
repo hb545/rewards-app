@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
+import com.exam.rewards.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,8 @@ public class RewardsServiceImpl implements RewardsService {
 			response = new TotalPurchaseCustomerResponse();
 			response.setCustomerId(customerId);
 			response.setTotalPurchaseAmount(totalPurchaseSum);
+		}else{
+			throw new NotFoundException("Customer Id not found");
 		}
 		return response;
 	}
@@ -106,6 +109,9 @@ public class RewardsServiceImpl implements RewardsService {
 		LocalDate dateBeforeThreeMonths = LocalDate.now().minusMonths(3);
 		List<RewardsDetails> rewardByCustomerId = transactionDetailsRepository.getRewardByCustomerId(customerId,dateBeforeThreeMonths);
 
+		if(rewardByCustomerId.isEmpty()){
+			throw new NotFoundException("Customer Id not found");
+		}
 		rewardByCustomerId.forEach(x -> {
 			Integer reward = calculateRewards(x);
 			x.setRewards(new BigDecimal(reward));
